@@ -265,7 +265,6 @@
 
     async function fetchWeather() {
       try {
-        // Essaie géoloc navigateur
         if (!navigator.geolocation) throw new Error("Géolocalisation non supportée");
 
         const getPosition = () =>
@@ -277,7 +276,10 @@
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
 
-        const weatherRes = await fetch(`https://wttr.in/${lat},${lon}?format=j1`);
+        const corsProxy = "https://corsproxy.io/?";
+        const weatherRes = await fetch(`${corsProxy}https://wttr.in/${lat},${lon}?format=j1`);
+        if (!weatherRes.ok) throw new Error("Erreur fetch météo");
+
         const weather = await weatherRes.json();
 
         const city = weather.nearest_area?.[0]?.areaName?.[0]?.value || "Localisation";
@@ -297,14 +299,18 @@
 
         document.getElementById("weather-content").innerHTML = `<div><strong>${city}</strong></div>${forecast}`;
       } catch (e) {
-        console.warn("Géoloc navigateur failed, fallback ipapi", e);
+        console.warn("Géoloc navigateur failed or wttr.in CORS issue, fallback ipapi", e);
 
         try {
-          // Fallback ipapi
           const geo = await fetch("https://ipapi.co/json");
+          if (!geo.ok) throw new Error("Erreur fetch ipapi");
           const loc = await geo.json();
           const city = loc.city;
-          const weatherRes = await fetch(`https://wttr.in/${city}?format=j1`);
+
+          const corsProxy = "https://corsproxy.io/?";
+          const weatherRes = await fetch(`${corsProxy}https://wttr.in/${city}?format=j1`);
+          if (!weatherRes.ok) throw new Error("Erreur fetch météo ipapi fallback");
+
           const weather = await weatherRes.json();
 
           const forecast = weather.weather.slice(0, 3).map(day => {
@@ -322,13 +328,21 @@
 
           document.getElementById("weather-content").innerHTML = `<div><strong>${city}</strong></div>${forecast}`;
         } catch (e2) {
-          console.error(e2);
-          document.getElementById("weather-content").textContent = "Impossible de récupérer la météo locale.";
+          console.error("Fallback météo a aussi foiré", e2);
+          document.getElementById("weather-content").textContent = "Erreur de chargement météo.";
         }
       }
     }
 
     fetchWeather();
+
+    /*
+    // Test météo simple à coller dans console navigateur :
+    // fetch('https://corsproxy.io/?https://wttr.in/Paris?format=j1')
+    //   .then(res => res.json())
+    //   .then(data => console.log('Test météo Paris OK:', data))
+    //   .catch(err => console.error('Erreur fetch météo:', err));
+    */
   </script>
 </body>
 </html>
