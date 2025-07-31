@@ -50,7 +50,7 @@
   <h1>🌦️ Météo 7 jours</h1>
   <div id="city-selector">
     <input type="text" id="city-input" placeholder="Entrez une ville..." />
-    <button onclick="updateCity()">🔍 Rechercher</button>
+    <button id="search-btn">🔍 Rechercher</button>
   </div>
   <h2 id="city-name">Chargement...</h2>
   <div id="forecast">Chargement météo...</div>
@@ -59,6 +59,7 @@
     const cityInput = document.getElementById("city-input");
     const cityNameEl = document.getElementById("city-name");
     const forecastEl = document.getElementById("forecast");
+    const searchBtn = document.getElementById("search-btn");
 
     const getIcon = (desc) => {
       const d = desc.toLowerCase();
@@ -142,6 +143,8 @@
 
       fetchWeather(savedCity);
     };
+
+    searchBtn.addEventListener('click', updateCity);
   </script>
 </body>
 </html>
