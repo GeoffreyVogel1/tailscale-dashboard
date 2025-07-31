@@ -1,218 +1,224 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Makalu - Geoffrey</title>
+  <meta charset="UTF-8" />
+  <title>Dashboard Makalu</title>
   <style>
     :root {
-      --bg-color: #1e1e2f;
-      --text-color: #f0f0f0;
+      --bg: #1e1e2f;
       --card-bg: #2c2c3c;
+      --text: #f0f0f0;
       --accent: #ffd166;
       --link: #06d6a0;
     }
-
-    body.light {
-      --bg-color: #ffffff;
-      --text-color: #1e1e2f;
-      --card-bg: #f0f0f0;
-      --accent: #ff6f00;
-      --link: #00796b;
+    [data-theme="light"] {
+      --bg: #f0f0f0;
+      --card-bg: #ffffff;
+      --text: #1e1e2f;
+      --accent: #e07a5f;
+      --link: #007acc;
     }
-
     body {
       font-family: Arial, sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
-      padding: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
-
-    header {
+    header.main-header {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
-      background: var(--card-bg);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
-
-    .time-date {
-      font-size: 0.9rem;
+    .left-top#datetime {
+      flex: 1;
+      font-size: 0.95em;
     }
-
-    .status-indicator {
+    h1.center-title {
+      flex: 1;
+      text-align: center;
+      font-size: 1.8em;
+      color: var(--accent);
+      margin: 0;
+    }
+    .right-top {
+      flex: 1;
       display: flex;
       align-items: center;
-      gap: 5px;
-    }
-
-    .status-led {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: grey;
-    }
-
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    #toggle-theme {
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      color: var(--text-color);
+      gap: 6px;
+      justify-content: flex-end;
       font-weight: bold;
     }
-
-    h1 {
-      text-align: center;
-      color: var(--accent);
-      margin-top: 0.5rem;
+    .status-dot, #ping-status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: gray;
     }
-
-    .tail-link {
-      text-align: center;
-      margin: 10px;
+    nav.subheader {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
-
-    .card-container {
+    nav.subheader a {
+      color: var(--link);
+      font-weight: bold;
+      text-decoration: none;
+    }
+    nav.subheader a:hover {
+      text-decoration: underline;
+    }
+    button.toggle-btn {
+      background: none;
+      border: 2px solid var(--link);
+      padding: 5px 10px;
+      color: var(--link);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    main {
+      flex: 1;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      padding: 20px;
-      gap: 20px;
+      gap: 10px;
     }
-
     .card {
       background: var(--card-bg);
       border-radius: 10px;
       padding: 20px;
-      width: 250px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      width: 300px;
       text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-
     a {
       color: var(--link);
       text-decoration: none;
       font-weight: bold;
     }
-
     a:hover {
       text-decoration: underline;
     }
-
     footer {
+      margin-top: auto;
+      font-size: 0.8em;
+      color: var(--text);
       text-align: right;
-      padding: 10px 20px;
-      font-size: 0.8rem;
+      padding-right: 20px;
+      padding-bottom: 10px;
     }
   </style>
 </head>
-<body>
-  <header>
-    <div class="time-date" id="datetime"></div>
-    <div class="controls">
-      <div class="status-indicator">
-        <span>Home</span>
-        <div class="status-led" id="home-status"></div>
-      </div>
-      <button id="toggle-theme">🌓</button>
+<body data-theme="">
+
+  <header class="main-header">
+    <div id="datetime" class="left-top">Chargement...</div>
+    <h1 class="center-title">Dashboard MAKALU</h1>
+    <div class="right-top">
+      <span>Home</span>
+      <div id="ping-status" class="status-dot" title="Statut du ping"></div>
     </div>
   </header>
 
-  <div class="tail-link">
-    <a href="https://login.tailscale.com/admin/machines" target="_blank">🔗 Accéder à l'interface Tailscale</a>
-  </div>
+  <nav class="subheader">
+    <a href="https://login.tailscale.com/admin/machines" target="_blank" rel="noopener noreferrer">→ Voir l’interface Tailscale</a>
+    <button class="toggle-btn" onclick="toggleTheme()">Clair/Sombre</button>
+  </nav>
 
-  <h1>Dashboard Makalu</h1>
-
-  <div class="card-container">
+  <main>
     <div class="card">
       <h2>Plex</h2>
-      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Accéder à Plex</a>
+      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank" rel="noopener noreferrer">Accéder à Plex</a>
     </div>
 
     <div class="card">
       <h2>Radarr</h2>
-      <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Accéder à Radarr</a>
+      <a href="http://nas.tail044b6.ts.net:7878" target="_blank" rel="noopener noreferrer">Accéder à Radarr</a>
     </div>
 
     <div class="card">
       <h2>Lidarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Accéder à Lidarr</a>
+      <a href="http://nas.tail044b6.ts.net:8686" target="_blank" rel="noopener noreferrer">Accéder à Lidarr</a>
     </div>
 
     <div class="card">
       <h2>Sonarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Accéder à Sonarr</a>
+      <a href="http://nas.tail044b6.ts.net:8989" target="_blank" rel="noopener noreferrer">Accéder à Sonarr</a>
     </div>
 
     <div class="card">
       <h2>Tautulli</h2>
-      <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Accéder à Tautulli</a>
+      <a href="http://nas.tail044b6.ts.net:8181" target="_blank" rel="noopener noreferrer">Accéder à Tautulli</a>
     </div>
 
     <div class="card">
       <h2>qBittorrent</h2>
-      <a href="http://nas.tail044b6.ts.net:8080" target="_blank">Accéder à qBittorrent</a>
+      <a href="http://nas.tail044b6.ts.net:8080" target="_blank" rel="noopener noreferrer">Accéder à qBittorrent</a>
     </div>
 
     <div class="card">
       <h2>Home Assistant</h2>
-      <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Accéder à Home Assistant</a>
+      <a href="http://nas.tail044b6.ts.net:8123" target="_blank" rel="noopener noreferrer">Accéder à Home Assistant</a>
     </div>
 
     <div class="card">
       <h2>Bureau à distance - PC Gaming</h2>
       <p>Utilise <code>pc-gaming.tail044b6.ts.net:3389</code> dans ton app RDP.</p>
     </div>
-  </div>
+  </main>
 
   <footer>© bayx.org</footer>
 
   <script>
-    // Heure + Date
     function updateDateTime() {
       const now = new Date();
-      const hours = now.getHours() % 12 || 12;
-      const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+      const date = now.toLocaleDateString('fr-FR', options);
+      const hours = now.getHours().toString().padStart(2, '0');
       const minutes = now.getMinutes().toString().padStart(2, '0');
-      const date = now.toLocaleDateString();
-      document.getElementById("datetime").textContent = `${hours}:${minutes} ${ampm} | ${date}`;
+      const time = `${hours}:${minutes}`;
+      document.getElementById('datetime').textContent = `${date} – ${time}`;
     }
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
-    // Mode sombre / clair
-    const toggleBtn = document.getElementById("toggle-theme");
-    toggleBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light");
-    });
-
-    // Ping status check (Google pour test)
-    async function checkPing(host) {
-      try {
-        const response = await fetch("https://corsproxy.io/?https://" + host, { method: 'HEAD' });
-        return response.ok;
-      } catch (e) {
-        return false;
+    function toggleTheme() {
+      const current = document.body.getAttribute("data-theme");
+      if (current === "light") {
+        document.body.removeAttribute("data-theme");
+      } else {
+        document.body.setAttribute("data-theme", "light");
       }
     }
 
-    async function updateHomeStatus() {
-      const led = document.getElementById("home-status");
-      const isOnline = await checkPing("www.google.com");
-      led.style.background = isOnline ? "lime" : "red";
+    async function checkPing() {
+      const status = document.getElementById('ping-status');
+      try {
+        const response = await fetch('https://dry-sea-5d28.g-fleurbayx.workers.dev/');
+        const data = await response.json();
+        if (data.online) {
+          status.style.backgroundColor = 'limegreen';
+          status.title = 'Home is reachable';
+        } else {
+          status.style.backgroundColor = 'red';
+          status.title = 'Home is unreachable';
+        }
+      } catch (e) {
+        status.style.backgroundColor = 'gray';
+        status.title = 'Status unknown';
+      }
     }
-    setInterval(updateHomeStatus, 10000);
-    updateHomeStatus();
+    checkPing();
+    setInterval(checkPing, 60000); // toutes les 60 secondes
   </script>
+
 </body>
 </html>
