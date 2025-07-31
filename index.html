@@ -2,7 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Makalu</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <style>
     :root {
       --bg: #1e1e2f;
@@ -18,17 +20,21 @@
       --accent: #e07a5f;
       --link: #007acc;
     }
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
       background: var(--bg);
       color: var(--text);
-      margin: 0;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
       min-height: 100vh;
-      position: relative;
+      scroll-behavior: smooth;
+    }
+    body > main {
+      flex: 1;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -47,7 +53,6 @@
       font-size: 1.8em;
       color: var(--accent);
       margin: 0;
-      min-width: 200px;
     }
     .subheader {
       width: 100%;
@@ -58,10 +63,7 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-    #datetime {
-      font-size: 0.95em;
-      min-width: 150px;
-    }
+    #datetime { font-size: 0.95em; }
     .status-dot {
       display: inline-block;
       width: 10px;
@@ -87,24 +89,12 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       flex-shrink: 0;
     }
-    .weather-day {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 8px 0;
-      text-align: left;
-    }
-    .weather-day span {
-      flex: 1;
-    }
     a {
       color: var(--link);
       text-decoration: none;
       font-weight: bold;
     }
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
     .toggle-btn {
       background: none;
       border: 2px solid var(--link);
@@ -115,20 +105,12 @@
       min-width: 100px;
     }
     footer {
-      position: absolute;
-      bottom: 10px;
-      right: 20px;
+      padding: 10px 20px;
+      text-align: right;
       font-size: 0.8em;
-      color: var(--text);
     }
-    /* Responsive */
     @media (max-width: 1024px) {
-      .cards-container {
-        max-width: 720px;
-      }
-      .card {
-        width: 45%;
-      }
+      .card { width: 45%; }
     }
     @media (max-width: 600px) {
       .main-header, .subheader {
@@ -136,92 +118,58 @@
         align-items: center;
         gap: 10px;
       }
-      #datetime, .center-title, .right-top {
-        min-width: auto;
-        text-align: center;
-      }
-      .cards-container {
-        max-width: 100%;
-        gap: 15px;
-      }
-      .card {
-        width: 100%;
-      }
-      .toggle-btn {
-        width: 100%;
-        max-width: 300px;
-      }
+      .cards-container { gap: 15px; }
+      .card { width: 100%; }
+      .toggle-btn { width: 100%; max-width: 300px; }
     }
   </style>
 </head>
 <body>
+  <main>
+    <header class="main-header">
+      <div id="datetime">Chargement...</div>
+      <h1 class="center-title">Dashboard MAKALU</h1>
+      <div class="right-top">
+        <span>Home <span class="status-dot" id="home-status"></span></span>
+      </div>
+    </header>
 
-  <header class="main-header">
-    <div class="left-top" id="datetime">Chargement...</div>
-    <h1 class="center-title">Dashboard MAKALU</h1>
-    <div class="right-top">
-      <span>Home <span class="status-dot" id="home-status"></span></span>
-    </div>
-  </header>
-
-  <div class="subheader">
-    <div class="tailscale-link">
-      <a href="https://login.tailscale.com/admin/machines" target="_blank">→ Voir l’interface Tailscale</a>
-    </div>
-    <button class="toggle-btn" onclick="toggleTheme()">Clair/Sombre</button>
-  </div>
-
-  <div class="cards-container">
-    <div class="card">
-      <h2>Plex</h2>
-      <a href="http://100.100.243.33:32400/web" target="_blank" rel="noopener noreferrer">Plex</a>
+    <div class="subheader">
+      <a href="https://login.tailscale.com/admin/machines" target="_blank">→ Interface Tailscale</a>
+      <a href="meteo.html">→ Météo détaillée</a>
+      <button class="toggle-btn" onclick="toggleTheme()">Clair/Sombre</button>
     </div>
 
-    <div class="card">
-      <h2>Radarr</h2>
-      <a href="http://100.100.243.33:7878" target="_blank" rel="noopener noreferrer">Radarr</a>
+    <div class="cards-container">
+      <!-- Cards de services -->
+      <div class="card"><h2>Plex</h2><a href="http://100.100.243.33:32400/web" target="_blank">Plex</a></div>
+      <div class="card"><h2>Radarr</h2><a href="http://100.100.243.33:7878" target="_blank">Radarr</a></div>
+      <div class="card"><h2>Lidarr</h2><a href="http://100.100.243.33:8686" target="_blank">Lidarr</a></div>
+      <div class="card"><h2>Sonarr</h2><a href="http://100.100.243.33:8989" target="_blank">Sonarr</a></div>
+      <div class="card"><h2>Tautulli</h2><a href="http://100.100.243.33:8181" target="_blank">Tautulli</a></div>
+      <div class="card"><h2>qBittorrent</h2><a href="http://100.100.243.33:8080" target="_blank">qBittorrent</a></div>
+      <div class="card"><h2>Home Assistant</h2><a href="http://100.100.243.33:8123" target="_blank">Home Assistant</a></div>
+      <div class="card"><h2>RDP - Gaming</h2><p><code>pc-gaming.tail044b6.ts.net:3389</code></p></div>
+      <div class="card" id="weather-card"><h2>Météo</h2><div id="weather-content">Chargement météo...</div></div>
     </div>
-
-    <div class="card">
-      <h2>Lidarr</h2>
-      <a href="http://100.100.243.33:8686" target="_blank" rel="noopener noreferrer">Lidarr</a>
-    </div>
-
-    <div class="card">
-      <h2>Sonarr</h2>
-      <a href="http://100.100.243.33:8989" target="_blank" rel="noopener noreferrer">Sonarr</a>
-    </div>
-
-    <div class="card">
-      <h2>Tautulli</h2>
-      <a href="http://100.100.243.33:8181" target="_blank" rel="noopener noreferrer">Tautulli</a>
-    </div>
-
-    <div class="card">
-      <h2>qBittorrent</h2>
-      <a href="http://100.100.243.33:8080" target="_blank" rel="noopener noreferrer">qBittorrent</a>
-    </div>
-
-    <div class="card">
-      <h2>Home Assistant</h2>
-      <a href="http://100.100.243.33:8123" target="_blank" rel="noopener noreferrer">Home Assistant</a>
-    </div>
-
-    <div class="card">
-      <h2>Bureau à distance - PC Gaming</h2>
-      <p>Utilise <code>pc-gaming.tail044b6.ts.net:3389</code> dans ton app RDP.</p>
-    </div>
-
-    <div class="card" id="weather-card">
-      <h2>Météo locale</h2>
-      <div id="weather-content">Chargement météo...</div>
-    </div>
-  </div>
+  </main>
 
   <footer>© bayx.org</footer>
 
+  <noscript>
+    <div style="color: red; text-align: center;">⚠️ Ce site a besoin de JavaScript pour fonctionner.</div>
+  </noscript>
+
   <script>
-    // Heure en 12h format
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    document.body.setAttribute("data-theme", savedTheme);
+    function toggleTheme() {
+      const current = document.body.getAttribute("data-theme");
+      const newTheme = current === "light" ? "dark" : "light";
+      document.body.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    }
+
     function updateDateTime() {
       const now = new Date();
       const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
@@ -230,118 +178,41 @@
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12 || 12;
-      const time = `${hours}:${minutes} ${ampm}`;
-      document.getElementById('datetime').textContent = `${date} – ${time}`;
+      document.getElementById('datetime').textContent = `${date} – ${hours}:${minutes} ${ampm}`;
     }
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
-    // Toggle thème clair/sombre
-    function toggleTheme() {
-      const current = document.body.getAttribute("data-theme");
-      document.body.setAttribute("data-theme", current === "light" ? "dark" : "light");
-    }
-    document.body.setAttribute("data-theme", "dark");
-
-    // Vérifie connexion internet via google.com
     async function checkPing() {
       const status = document.getElementById('home-status');
       try {
-        await fetch("https://www.google.com", { mode: "no-cors" });
+        await fetch("https://dry-sea-5d28.g-fleurbayx.workers.dev/ip", { mode: "cors" });
         status.style.backgroundColor = "limegreen";
-      } catch (e) {
+      } catch {
         status.style.backgroundColor = "red";
       }
     }
     checkPing();
     setInterval(checkPing, 30000);
 
-    // Icones météo basiques
-    function getWeatherIcon(desc) {
-      desc = desc.toLowerCase();
-      if (desc.includes("sun") || desc.includes("soleil")) return "☀️";
-      if (desc.includes("cloud") || desc.includes("nuage")) return "☁️";
-      if (desc.includes("rain") || desc.includes("pluie")) return "🌧️";
-      if (desc.includes("snow") || desc.includes("neige")) return "❄️";
-      return "🌈";
-    }
-
-    // Récupère météo avec fallback
     async function fetchWeather() {
       try {
-        if (!navigator.geolocation) throw new Error("Géolocalisation non supportée");
-
-        const getPosition = () =>
-          new Promise((res, rej) =>
-            navigator.geolocation.getCurrentPosition(res, rej, { timeout: 10000 })
-          );
-
-        const pos = await getPosition();
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-
+        const city = "Paris";
         const corsProxy = "https://muddy-night-834d.g-fleurbayx.workers.dev/?q=";
-        const urlWttr = encodeURIComponent(`https://wttr.in/${lat},${lon}?format=j1`);
+        const urlWttr = encodeURIComponent(`https://wttr.in/${city}?format=j1`);
         const weatherRes = await fetch(corsProxy + urlWttr);
-        if (!weatherRes.ok) throw new Error("Erreur fetch météo");
-
         const weather = await weatherRes.json();
-
-        const city = weather.nearest_area?.[0]?.areaName?.[0]?.value || "Localisation";
-
-        const forecast = weather.weather.slice(0, 3).map(day => {
-          const dateObj = new Date(day.date);
-          const weekday = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
-          const hour = day.hourly[4];
-          const icon = getWeatherIcon(hour.weatherDesc[0].value);
-          return `<div class="weather-day">
-            <span>${weekday}</span>
-            <span>${icon}</span>
-            <span>${day.mintempC}°C - ${day.maxtempC}°C</span>
-            <span>${hour.chanceofrain}% 🌧️</span>
-          </div>`;
-        }).join('');
-
-        document.getElementById("weather-content").innerHTML = `<div><strong>${city}</strong></div>${forecast}`;
-      } catch (e) {
-        console.warn("Géoloc navigateur failed or wttr.in CORS issue, fallback ipapi", e);
-
-        try {
-          const geo = await fetch("https://ipapi.co/json");
-          if (!geo.ok) throw new Error("Erreur fetch ipapi");
-          const loc = await geo.json();
-          const city = loc.city;
-
-          const corsProxy = "https://muddy-night-834d.g-fleurbayx.workers.dev/?q=";
-          const urlWttrCity = encodeURIComponent(`https://wttr.in/${city}?format=j1`);
-          const weatherResFallback = await fetch(corsProxy + urlWttrCity);
-          if (!weatherResFallback.ok) throw new Error("Erreur fetch météo ipapi fallback");
-
-          const weather = await weatherResFallback.json();
-
-          const forecast = weather.weather.slice(0, 3).map(day => {
-            const dateObj = new Date(day.date);
-            const weekday = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
-            const hour = day.hourly[4];
-            const icon = getWeatherIcon(hour.weatherDesc[0].value);
-            return `<div class="weather-day">
-              <span>${weekday}</span>
-              <span>${icon}</span>
-              <span>${day.mintempC}°C - ${day.maxtempC}°C</span>
-              <span>${hour.chanceofrain}% 🌧️</span>
-            </div>`;
-          }).join('');
-
-          document.getElementById("weather-content").innerHTML = `<div><strong>${city}</strong></div>${forecast}`;
-        } catch (e2) {
-          console.error("Fallback météo a aussi foiré", e2);
-          document.getElementById("weather-content").textContent = "Erreur de chargement météo.";
-        }
+        const today = weather.weather[0];
+        const hour = today.hourly[4];
+        const desc = hour.weatherDesc[0].value;
+        const icon = desc.includes("sun") || desc.includes("soleil") ? "☀️" : desc.includes("rain") ? "🌧️" : "☁️";
+        const summary = `${today.mintempC}°C - ${today.maxtempC}°C, ${hour.chanceofrain}% pluie ${icon}`;
+        document.getElementById("weather-content").textContent = summary;
+      } catch {
+        document.getElementById("weather-content").textContent = "Erreur météo";
       }
     }
-
     fetchWeather();
   </script>
-
 </body>
 </html>
