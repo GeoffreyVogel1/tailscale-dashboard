@@ -121,7 +121,6 @@
       font-size: 0.8em;
       color: var(--text);
     }
-
     /* Responsive */
     @media (max-width: 1024px) {
       .cards-container {
@@ -170,40 +169,43 @@
       <a href="https://login.tailscale.com/admin/machines" target="_blank">→ Voir l’interface Tailscale</a>
     </div>
     <button class="toggle-btn" onclick="toggleTheme()">Clair/Sombre</button>
- <div class="card">
-  <h2>Plex</h2>
-  <a href="http://100.100.243.33:32400/web" target="_blank">Plex</a>
-</div>
+  </div>
 
-<div class="card">
-  <h2>Radarr</h2>
-  <a href="http://100.100.243.33:7878" target="_blank">Radarr</a>
-</div>
+  <div class="cards-container">
+    <div class="card">
+      <h2>Plex</h2>
+      <a href="http://100.100.243.33:32400/web" target="_blank" rel="noopener noreferrer">Plex</a>
+    </div>
 
-<div class="card">
-  <h2>Lidarr</h2>
-  <a href="http://100.100.243.33:8686" target="_blank">Lidarr</a>
-</div>
+    <div class="card">
+      <h2>Radarr</h2>
+      <a href="http://100.100.243.33:7878" target="_blank" rel="noopener noreferrer">Radarr</a>
+    </div>
 
-<div class="card">
-  <h2>Sonarr</h2>
-  <a href="http://100.100.243.33:8989" target="_blank">Sonarr</a>
-</div>
+    <div class="card">
+      <h2>Lidarr</h2>
+      <a href="http://100.100.243.33:8686" target="_blank" rel="noopener noreferrer">Lidarr</a>
+    </div>
 
-<div class="card">
-  <h2>Tautulli</h2>
-  <a href="http://100.100.243.33:8181" target="_blank">Tautulli</a>
-</div>
+    <div class="card">
+      <h2>Sonarr</h2>
+      <a href="http://100.100.243.33:8989" target="_blank" rel="noopener noreferrer">Sonarr</a>
+    </div>
 
-<div class="card">
-  <h2>qBittorrent</h2>
-  <a href="http://100.100.243.33:8080" target="_blank">qBittorrent</a>
-</div>
+    <div class="card">
+      <h2>Tautulli</h2>
+      <a href="http://100.100.243.33:8181" target="_blank" rel="noopener noreferrer">Tautulli</a>
+    </div>
 
-<div class="card">
-  <h2>Home Assistant</h2>
-  <a href="http://100.100.243.33:8123" target="_blank">Home Assistant</a>
-</div>
+    <div class="card">
+      <h2>qBittorrent</h2>
+      <a href="http://100.100.243.33:8080" target="_blank" rel="noopener noreferrer">qBittorrent</a>
+    </div>
+
+    <div class="card">
+      <h2>Home Assistant</h2>
+      <a href="http://100.100.243.33:8123" target="_blank" rel="noopener noreferrer">Home Assistant</a>
+    </div>
 
     <div class="card">
       <h2>Bureau à distance - PC Gaming</h2>
@@ -219,6 +221,7 @@
   <footer>© bayx.org</footer>
 
   <script>
+    // Heure en 12h format
     function updateDateTime() {
       const now = new Date();
       const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
@@ -233,12 +236,14 @@
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
+    // Toggle thème clair/sombre
     function toggleTheme() {
       const current = document.body.getAttribute("data-theme");
       document.body.setAttribute("data-theme", current === "light" ? "dark" : "light");
     }
     document.body.setAttribute("data-theme", "dark");
 
+    // Vérifie connexion internet via google.com
     async function checkPing() {
       const status = document.getElementById('home-status');
       try {
@@ -251,6 +256,7 @@
     checkPing();
     setInterval(checkPing, 30000);
 
+    // Icones météo basiques
     function getWeatherIcon(desc) {
       desc = desc.toLowerCase();
       if (desc.includes("sun") || desc.includes("soleil")) return "☀️";
@@ -260,6 +266,7 @@
       return "🌈";
     }
 
+    // Récupère météo avec fallback
     async function fetchWeather() {
       try {
         if (!navigator.geolocation) throw new Error("Géolocalisation non supportée");
@@ -335,5 +342,6 @@
 
     fetchWeather();
   </script>
+
 </body>
 </html>
