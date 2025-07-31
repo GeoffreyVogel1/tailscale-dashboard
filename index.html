@@ -1,81 +1,163 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Dashboard Tailscale - Geoffrey</title>
   <style>
+    /* Reset basique */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
       background: #1e1e2f;
       color: #f0f0f0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 30px 10px;
+      min-height: 100vh;
     }
     h1 {
       color: #ffd166;
+      margin-bottom: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
     }
     .card {
       background: #2c2c3c;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 20px;
-      margin: 10px;
-      width: 300px;
+      box-shadow: 0 4px 15px rgb(0 0 0 / 0.5);
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    a {
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 25px rgb(6 214 160 / 0.8);
+    }
+    .card h2 {
+      margin: 10px 0;
+      font-weight: 700;
+      font-size: 1.3rem;
       color: #06d6a0;
-      text-decoration: none;
-      font-weight: bold;
+      user-select: none;
     }
-    a:hover {
-      text-decoration: underline;
+    .card a {
+      margin-top: auto;
+      display: inline-block;
+      padding: 8px 15px;
+      border-radius: 6px;
+      background-color: #06d6a0;
+      color: #1e1e2f;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      user-select: none;
+    }
+    .card a:hover {
+      background-color: #04b883;
+    }
+    .card p {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      font-family: monospace;
+      color: #aaa;
+      user-select: text;
+    }
+    svg {
+      width: 50px;
+      height: 50px;
+      fill: #06d6a0;
+      margin-bottom: 10px;
+      user-select: none;
     }
   </style>
 </head>
 <body>
   <h1>Dashboard Tailscale</h1>
 
-  <div class="card">
-    <h2>Plex</h2>
-    <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Accéder à Plex</a>
-  </div>
+  <div class="grid">
+    <div class="card" onclick="window.open('http://nas.tail044b6.ts.net:32400/web', '_blank')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+      </svg>
+      <h2>Plex</h2>
+      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank" rel="noopener noreferrer">Accéder à Plex</a>
+    </div>
 
-  <div class="card">
-    <h2>Radarr</h2>
-    <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Accéder à Radarr</a>
-  </div>
+    <div class="card" onclick="window.open('http://nas.tail044b6.ts.net:7878', '_blank')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <path fill="#1e1e2f" d="M8 12l3 3 5-5" />
+      </svg>
+      <h2>Radarr</h2>
+      <a href="http://nas.tail044b6.ts.net:7878" target="_blank" rel="noopener noreferrer">Accéder à Radarr</a>
+    </div>
 
-  <div class="card">
-    <h2>Lidarr</h2>
-    <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Accéder à Lidarr</a>
-  </div>
+    <div class="card" onclick="window.open('http://nas.tail044b6.ts.net:8686', '_blank')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3a9 9 0 100 18 9 9 0 000-18zM10 16l-4-4 1.41-1.41L10 13.17l6.59-6.59L18 8l-8 8z"/>
+      </svg>
+      <h2>Lidarr</h2>
+      <a href="http://nas.tail044b6.ts.net:8686" target="_blank" rel="noopener noreferrer">Accéder à Lidarr</a>
+    </div>
 
-  <div class="card">
-    <h2>Sonarr</h2>
-    <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Accéder à Sonarr</a>
-  </div>
+    <div class="card" onclick="window.open('http://nas.tail044b6.ts.net:8989', '_blank')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 4v16m8-8H4"/>
+      </svg>
+      <h2>Sonarr</h2>
+      <a href="http://nas.tail044b6.ts.net:8989" target="_blank" rel="noopener noreferrer">Accéder à Sonarr</a>
+    </div>
 
-  <div class="card">
-    <h2>Tautulli</h2>
-    <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Accéder à Tautulli</a>
-  </div>
+    <div class="card" onclick="window.open('http://nas.tail044b6.ts.net:8181', '_blank')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <path fill="#1e1e2f" d="M15 9l-6 6M9 9l6 6" />
+      </svg>
+      <h2>Tautulli</h2>
+      <a href="http://nas.tail044b6.ts.net:8181" target="_blank" rel="noopener noreferrer">Accéder à Tautulli</a>
+    </div>
 
-  <div class="card">
-    <h2>qBittorrent</h2>
-    <a href="http://nas.tail044b6.ts.net:8080" target="_blank">Accéder à qBittorrent</a>
-  </div>
+    <div class="card" onclick="window.open('http://nas.tail044b6.ts.net:8080', '_blank')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="7" width="16" height="10" rx="2" ry="2" />
+      </svg>
+      <h2>qBittorrent</h2>
+      <a href="http://nas.tail044b6.ts.net:8080" target="_blank" rel="noopener noreferrer">Accéder à qBittorrent</a>
+    </div>
 
-  <div class="card">
-    <h2>Home Assistant</h2>
-    <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Accéder à Home Assistant</a>
-  </div>
+    <div class="card" onclick="window.open('http://nas.tail044b6.ts.net:8123', '_blank')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2a10 10 0 110 20 10 10 0 010-20zm0 4a6 6 0 100 12 6 6 0 000-12z"/>
+      </svg>
+      <h2>Home Assistant</h2>
+      <a href="http://nas.tail044b6.ts.net:8123" target="_blank" rel="noopener noreferrer">Accéder à Home Assistant</a>
+    </div>
 
-  <div class="card">
-    <h2>Bureau à distance - PC Gaming</h2>
-    <p>Utilise <code>pc-gaming.tail044b6.ts.net:3389</code> dans ton app RDP.</p>
+    <div class="card">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="5" width="16" height="14" rx="2" ry="2" />
+        <path d="M9 12h6m-3-3v6" stroke="#06d6a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h2>Bureau à distance - PC Gaming</h2>
+      <p><code>pc-gaming.tail044b6.ts.net:3389</code></p>
+      <small>Utilise ce host dans ton app RDP</small>
+    </div>
   </div>
 
 </body>
