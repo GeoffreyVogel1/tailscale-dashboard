@@ -175,37 +175,37 @@
   <div class="cards-container">
     <div class="card">
       <h2>Plex</h2>
-      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Accéder à Plex</a>
+      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Plex</a>
     </div>
 
     <div class="card">
       <h2>Radarr</h2>
-      <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Accéder à Radarr</a>
+      <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Radarr</a>
     </div>
 
     <div class="card">
       <h2>Lidarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Accéder à Lidarr</a>
+      <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Lidarr</a>
     </div>
 
     <div class="card">
       <h2>Sonarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Accéder à Sonarr</a>
+      <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Sonarr</a>
     </div>
 
     <div class="card">
       <h2>Tautulli</h2>
-      <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Accéder à Tautulli</a>
+      <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Tautulli</a>
     </div>
 
     <div class="card">
       <h2>qBittorrent</h2>
-      <a href="http://nas.tail044b6.ts.net:8080" target="_blank">Accéder à qBittorrent</a>
+      <a href="http://nas.tail044b6.ts.net:8080" target="_blank">qBittorrent</a>
     </div>
 
     <div class="card">
       <h2>Home Assistant</h2>
-      <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Accéder à Home Assistant</a>
+      <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Home Assistant</a>
     </div>
 
     <div class="card">
@@ -265,11 +265,23 @@
 
     async function fetchWeather() {
       try {
-        const geo = await fetch("https://ipapi.co/json");
-        const loc = await geo.json();
-        const city = loc.city;
-        const weatherRes = await fetch(`https://wttr.in/${city}?format=j1`);
+        // Essaie géoloc navigateur
+        if (!navigator.geolocation) throw new Error("Géolocalisation non supportée");
+
+        const getPosition = () =>
+          new Promise((res, rej) =>
+            navigator.geolocation.getCurrentPosition(res, rej, { timeout: 10000 })
+          );
+
+        const pos = await getPosition();
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        const weatherRes = await fetch(`https://wttr.in/${lat},${lon}?format=j1`);
         const weather = await weatherRes.json();
+
+        const city = weather.nearest_area?.[0]?.areaName?.[0]?.value || "Localisation";
+
         const forecast = weather.weather.slice(0, 3).map(day => {
           const dateObj = new Date(day.date);
           const weekday = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
@@ -282,11 +294,40 @@
             <span>${hour.chanceofrain}% 🌧️</span>
           </div>`;
         }).join('');
+
         document.getElementById("weather-content").innerHTML = `<div><strong>${city}</strong></div>${forecast}`;
       } catch (e) {
-        document.getElementById("weather-content").textContent = "Erreur de chargement météo.";
+        console.warn("Géoloc navigateur failed, fallback ipapi", e);
+
+        try {
+          // Fallback ipapi
+          const geo = await fetch("https://ipapi.co/json");
+          const loc = await geo.json();
+          const city = loc.city;
+          const weatherRes = await fetch(`https://wttr.in/${city}?format=j1`);
+          const weather = await weatherRes.json();
+
+          const forecast = weather.weather.slice(0, 3).map(day => {
+            const dateObj = new Date(day.date);
+            const weekday = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
+            const hour = day.hourly[4];
+            const icon = getWeatherIcon(hour.weatherDesc[0].value);
+            return `<div class="weather-day">
+              <span>${weekday}</span>
+              <span>${icon}</span>
+              <span>${day.mintempC}°C - ${day.maxtempC}°C</span>
+              <span>${hour.chanceofrain}% 🌧️</span>
+            </div>`;
+          }).join('');
+
+          document.getElementById("weather-content").innerHTML = `<div><strong>${city}</strong></div>${forecast}`;
+        } catch (e2) {
+          console.error(e2);
+          document.getElementById("weather-content").textContent = "Impossible de récupérer la météo locale.";
+        }
       }
     }
+
     fetchWeather();
   </script>
 </body>
