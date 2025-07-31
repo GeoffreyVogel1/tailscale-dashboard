@@ -18,17 +18,20 @@
       --accent: #e07a5f;
       --link: #007acc;
     }
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       margin: 0;
       padding: 20px;
+      min-height: 100vh;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      position: relative;
     }
     .main-header {
       width: 100%;
@@ -36,6 +39,7 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      margin-bottom: 10px;
     }
     .center-title {
       flex: 1;
@@ -43,6 +47,7 @@
       font-size: 1.8em;
       color: var(--accent);
       margin: 0;
+      min-width: 200px;
     }
     .subheader {
       width: 100%;
@@ -50,9 +55,12 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     #datetime {
       font-size: 0.95em;
+      min-width: 150px;
     }
     .status-dot {
       display: inline-block;
@@ -62,14 +70,22 @@
       margin-left: 5px;
       background-color: gray;
     }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 1024px;
+    }
     .card {
       background: var(--card-bg);
       border-radius: 10px;
       padding: 20px;
-      margin: 10px;
       width: 300px;
       text-align: center;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      flex-shrink: 0;
     }
     .weather-day {
       display: flex;
@@ -96,6 +112,7 @@
       color: var(--link);
       border-radius: 8px;
       cursor: pointer;
+      min-width: 100px;
     }
     footer {
       position: absolute;
@@ -103,6 +120,38 @@
       right: 20px;
       font-size: 0.8em;
       color: var(--text);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .cards-container {
+        max-width: 720px;
+      }
+      .card {
+        width: 45%;
+      }
+    }
+    @media (max-width: 600px) {
+      .main-header, .subheader {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      #datetime, .center-title, .right-top {
+        min-width: auto;
+        text-align: center;
+      }
+      .cards-container {
+        max-width: 100%;
+        gap: 15px;
+      }
+      .card {
+        width: 100%;
+      }
+      .toggle-btn {
+        width: 100%;
+        max-width: 300px;
+      }
     }
   </style>
 </head>
@@ -123,49 +172,51 @@
     <button class="toggle-btn" onclick="toggleTheme()">Clair/Sombre</button>
   </div>
 
-  <div class="card">
-    <h2>Plex</h2>
-    <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Accéder à Plex</a>
-  </div>
+  <div class="cards-container">
+    <div class="card">
+      <h2>Plex</h2>
+      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Accéder à Plex</a>
+    </div>
 
-  <div class="card">
-    <h2>Radarr</h2>
-    <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Accéder à Radarr</a>
-  </div>
+    <div class="card">
+      <h2>Radarr</h2>
+      <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Accéder à Radarr</a>
+    </div>
 
-  <div class="card">
-    <h2>Lidarr</h2>
-    <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Accéder à Lidarr</a>
-  </div>
+    <div class="card">
+      <h2>Lidarr</h2>
+      <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Accéder à Lidarr</a>
+    </div>
 
-  <div class="card">
-    <h2>Sonarr</h2>
-    <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Accéder à Sonarr</a>
-  </div>
+    <div class="card">
+      <h2>Sonarr</h2>
+      <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Accéder à Sonarr</a>
+    </div>
 
-  <div class="card">
-    <h2>Tautulli</h2>
-    <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Accéder à Tautulli</a>
-  </div>
+    <div class="card">
+      <h2>Tautulli</h2>
+      <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Accéder à Tautulli</a>
+    </div>
 
-  <div class="card">
-    <h2>qBittorrent</h2>
-    <a href="http://nas.tail044b6.ts.net:8080" target="_blank">Accéder à qBittorrent</a>
-  </div>
+    <div class="card">
+      <h2>qBittorrent</h2>
+      <a href="http://nas.tail044b6.ts.net:8080" target="_blank">Accéder à qBittorrent</a>
+    </div>
 
-  <div class="card">
-    <h2>Home Assistant</h2>
-    <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Accéder à Home Assistant</a>
-  </div>
+    <div class="card">
+      <h2>Home Assistant</h2>
+      <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Accéder à Home Assistant</a>
+    </div>
 
-  <div class="card">
-    <h2>Bureau à distance - PC Gaming</h2>
-    <p>Utilise <code>pc-gaming.tail044b6.ts.net:3389</code> dans ton app RDP.</p>
-  </div>
+    <div class="card">
+      <h2>Bureau à distance - PC Gaming</h2>
+      <p>Utilise <code>pc-gaming.tail044b6.ts.net:3389</code> dans ton app RDP.</p>
+    </div>
 
-  <div class="card" id="weather-card">
-    <h2>Météo locale</h2>
-    <div id="weather-content">Chargement météo...</div>
+    <div class="card" id="weather-card">
+      <h2>Météo locale</h2>
+      <div id="weather-content">Chargement météo...</div>
+    </div>
   </div>
 
   <footer>© bayx.org</footer>
