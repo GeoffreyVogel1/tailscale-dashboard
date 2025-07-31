@@ -26,78 +26,60 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       min-height: 100vh;
+      position: relative;
     }
-    header.main-header {
+    .main-header {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      margin-bottom: 10px;
     }
-    .left-top#datetime {
-      flex: 1;
-      font-size: 0.95em;
-    }
-    h1.center-title {
+    .center-title {
       flex: 1;
       text-align: center;
       font-size: 1.8em;
       color: var(--accent);
       margin: 0;
     }
-    .right-top {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      justify-content: flex-end;
-      font-weight: bold;
-    }
-    .status-dot, #ping-status {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: gray;
-    }
-    nav.subheader {
+    .subheader {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
     }
-    nav.subheader a {
-      color: var(--link);
-      font-weight: bold;
-      text-decoration: none;
+    #datetime {
+      font-size: 0.95em;
     }
-    nav.subheader a:hover {
-      text-decoration: underline;
-    }
-    button.toggle-btn {
-      background: none;
-      border: 2px solid var(--link);
-      padding: 5px 10px;
-      color: var(--link);
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
+    .status-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-left: 5px;
+      background-color: gray;
     }
     .card {
       background: var(--card-bg);
       border-radius: 10px;
       padding: 20px;
+      margin: 10px;
       width: 300px;
       text-align: center;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .weather-day {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 0;
+      text-align: left;
+    }
+    .weather-day span {
+      flex: 1;
     }
     a {
       color: var(--link);
@@ -107,73 +89,84 @@
     a:hover {
       text-decoration: underline;
     }
+    .toggle-btn {
+      background: none;
+      border: 2px solid var(--link);
+      padding: 5px 10px;
+      color: var(--link);
+      border-radius: 8px;
+      cursor: pointer;
+    }
     footer {
-      margin-top: auto;
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
       font-size: 0.8em;
       color: var(--text);
-      text-align: right;
-      padding-right: 20px;
-      padding-bottom: 10px;
     }
   </style>
 </head>
-<body data-theme="">
+<body>
 
   <header class="main-header">
-    <div id="datetime" class="left-top">Chargement...</div>
+    <div class="left-top" id="datetime">Chargement...</div>
     <h1 class="center-title">Dashboard MAKALU</h1>
     <div class="right-top">
-      <span>Home</span>
-      <div id="ping-status" class="status-dot" title="Statut du ping"></div>
+      <span>Home <span class="status-dot" id="home-status"></span></span>
     </div>
   </header>
 
-  <nav class="subheader">
-    <a href="https://login.tailscale.com/admin/machines" target="_blank" rel="noopener noreferrer">→ Voir l’interface Tailscale</a>
+  <div class="subheader">
+    <div class="tailscale-link">
+      <a href="https://login.tailscale.com/admin/machines" target="_blank">→ Voir l’interface Tailscale</a>
+    </div>
     <button class="toggle-btn" onclick="toggleTheme()">Clair/Sombre</button>
-  </nav>
+  </div>
 
-  <main>
-    <div class="card">
-      <h2>Plex</h2>
-      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank" rel="noopener noreferrer">Accéder à Plex</a>
-    </div>
+  <div class="card">
+    <h2>Plex</h2>
+    <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Accéder à Plex</a>
+  </div>
 
-    <div class="card">
-      <h2>Radarr</h2>
-      <a href="http://nas.tail044b6.ts.net:7878" target="_blank" rel="noopener noreferrer">Accéder à Radarr</a>
-    </div>
+  <div class="card">
+    <h2>Radarr</h2>
+    <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Accéder à Radarr</a>
+  </div>
 
-    <div class="card">
-      <h2>Lidarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8686" target="_blank" rel="noopener noreferrer">Accéder à Lidarr</a>
-    </div>
+  <div class="card">
+    <h2>Lidarr</h2>
+    <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Accéder à Lidarr</a>
+  </div>
 
-    <div class="card">
-      <h2>Sonarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8989" target="_blank" rel="noopener noreferrer">Accéder à Sonarr</a>
-    </div>
+  <div class="card">
+    <h2>Sonarr</h2>
+    <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Accéder à Sonarr</a>
+  </div>
 
-    <div class="card">
-      <h2>Tautulli</h2>
-      <a href="http://nas.tail044b6.ts.net:8181" target="_blank" rel="noopener noreferrer">Accéder à Tautulli</a>
-    </div>
+  <div class="card">
+    <h2>Tautulli</h2>
+    <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Accéder à Tautulli</a>
+  </div>
 
-    <div class="card">
-      <h2>qBittorrent</h2>
-      <a href="http://nas.tail044b6.ts.net:8080" target="_blank" rel="noopener noreferrer">Accéder à qBittorrent</a>
-    </div>
+  <div class="card">
+    <h2>qBittorrent</h2>
+    <a href="http://nas.tail044b6.ts.net:8080" target="_blank">Accéder à qBittorrent</a>
+  </div>
 
-    <div class="card">
-      <h2>Home Assistant</h2>
-      <a href="http://nas.tail044b6.ts.net:8123" target="_blank" rel="noopener noreferrer">Accéder à Home Assistant</a>
-    </div>
+  <div class="card">
+    <h2>Home Assistant</h2>
+    <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Accéder à Home Assistant</a>
+  </div>
 
-    <div class="card">
-      <h2>Bureau à distance - PC Gaming</h2>
-      <p>Utilise <code>pc-gaming.tail044b6.ts.net:3389</code> dans ton app RDP.</p>
-    </div>
-  </main>
+  <div class="card">
+    <h2>Bureau à distance - PC Gaming</h2>
+    <p>Utilise <code>pc-gaming.tail044b6.ts.net:3389</code> dans ton app RDP.</p>
+  </div>
+
+  <div class="card" id="weather-card">
+    <h2>Météo locale</h2>
+    <div id="weather-content">Chargement météo...</div>
+  </div>
 
   <footer>© bayx.org</footer>
 
@@ -182,9 +175,11 @@
       const now = new Date();
       const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
       const date = now.toLocaleDateString('fr-FR', options);
-      const hours = now.getHours().toString().padStart(2, '0');
+      let hours = now.getHours();
       const minutes = now.getMinutes().toString().padStart(2, '0');
-      const time = `${hours}:${minutes}`;
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      const time = `${hours}:${minutes} ${ampm}`;
       document.getElementById('datetime').textContent = `${date} – ${time}`;
     }
     setInterval(updateDateTime, 1000);
@@ -192,33 +187,56 @@
 
     function toggleTheme() {
       const current = document.body.getAttribute("data-theme");
-      if (current === "light") {
-        document.body.removeAttribute("data-theme");
-      } else {
-        document.body.setAttribute("data-theme", "light");
-      }
+      document.body.setAttribute("data-theme", current === "light" ? "dark" : "light");
     }
+    document.body.setAttribute("data-theme", "dark");
 
     async function checkPing() {
-      const status = document.getElementById('ping-status');
+      const status = document.getElementById('home-status');
       try {
-        const response = await fetch('https://dry-sea-5d28.g-fleurbayx.workers.dev/');
-        const data = await response.json();
-        if (data.online) {
-          status.style.backgroundColor = 'limegreen';
-          status.title = 'Home is reachable';
-        } else {
-          status.style.backgroundColor = 'red';
-          status.title = 'Home is unreachable';
-        }
+        await fetch("https://www.google.com", { mode: "no-cors" });
+        status.style.backgroundColor = "limegreen";
       } catch (e) {
-        status.style.backgroundColor = 'gray';
-        status.title = 'Status unknown';
+        status.style.backgroundColor = "red";
       }
     }
     checkPing();
-    setInterval(checkPing, 60000); // toutes les 60 secondes
-  </script>
+    setInterval(checkPing, 30000);
 
+    function getWeatherIcon(desc) {
+      desc = desc.toLowerCase();
+      if (desc.includes("sun") || desc.includes("soleil")) return "☀️";
+      if (desc.includes("cloud") || desc.includes("nuage")) return "☁️";
+      if (desc.includes("rain") || desc.includes("pluie")) return "🌧️";
+      if (desc.includes("snow") || desc.includes("neige")) return "❄️";
+      return "🌈";
+    }
+
+    async function fetchWeather() {
+      try {
+        const geo = await fetch("https://ipapi.co/json");
+        const loc = await geo.json();
+        const city = loc.city;
+        const weatherRes = await fetch(`https://wttr.in/${city}?format=j1`);
+        const weather = await weatherRes.json();
+        const forecast = weather.weather.slice(0, 3).map(day => {
+          const dateObj = new Date(day.date);
+          const weekday = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
+          const hour = day.hourly[4];
+          const icon = getWeatherIcon(hour.weatherDesc[0].value);
+          return `<div class="weather-day">
+            <span>${weekday}</span>
+            <span>${icon}</span>
+            <span>${day.mintempC}°C - ${day.maxtempC}°C</span>
+            <span>${hour.chanceofrain}% 🌧️</span>
+          </div>`;
+        }).join('');
+        document.getElementById("weather-content").innerHTML = `<div><strong>${city}</strong></div>${forecast}`;
+      } catch (e) {
+        document.getElementById("weather-content").textContent = "Erreur de chargement météo.";
+      }
+    }
+    fetchWeather();
+  </script>
 </body>
 </html>
