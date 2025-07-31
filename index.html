@@ -175,37 +175,37 @@
   <div class="cards-container">
     <div class="card">
       <h2>Plex</h2>
-      <a href="http://nas.tail044b6.ts.net:32400/web" target="_blank">Plex</a>
+      <a href="100.100.243.33:32400/web" target="_blank">Plex</a>
     </div>
 
     <div class="card">
       <h2>Radarr</h2>
-      <a href="http://nas.tail044b6.ts.net:7878" target="_blank">Radarr</a>
+      <a href="100.100.243.33:7878" target="_blank">Radarr</a>
     </div>
 
     <div class="card">
       <h2>Lidarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8686" target="_blank">Lidarr</a>
+      <a href="100.100.243.33:8686" target="_blank">Lidarr</a>
     </div>
 
     <div class="card">
       <h2>Sonarr</h2>
-      <a href="http://nas.tail044b6.ts.net:8989" target="_blank">Sonarr</a>
+      <a href="100.100.243.33:8989" target="_blank">Sonarr</a>
     </div>
 
     <div class="card">
       <h2>Tautulli</h2>
-      <a href="http://nas.tail044b6.ts.net:8181" target="_blank">Tautulli</a>
+      <a href="100.100.243.33:8181" target="_blank">Tautulli</a>
     </div>
 
     <div class="card">
       <h2>qBittorrent</h2>
-      <a href="http://nas.tail044b6.ts.net:8080" target="_blank">qBittorrent</a>
+      <a href="100.100.243.33:8080" target="_blank">qBittorrent</a>
     </div>
 
     <div class="card">
       <h2>Home Assistant</h2>
-      <a href="http://nas.tail044b6.ts.net:8123" target="_blank">Home Assistant</a>
+      <a href="100.100.243.33:8123" target="_blank">Home Assistant</a>
     </div>
 
     <div class="card">
@@ -276,8 +276,9 @@
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
 
-        const corsProxy = "https://corsproxy.io/?";
-        const weatherRes = await fetch(`${corsProxy}https://wttr.in/${lat},${lon}?format=j1`);
+        const corsProxy = "https://muddy-night-834d.g-fleurbayx.workers.dev/?q=";
+        const urlWttr = encodeURIComponent(`https://wttr.in/${lat},${lon}?format=j1`);
+        const weatherRes = await fetch(corsProxy + urlWttr);
         if (!weatherRes.ok) throw new Error("Erreur fetch météo");
 
         const weather = await weatherRes.json();
@@ -307,11 +308,12 @@
           const loc = await geo.json();
           const city = loc.city;
 
-          const corsProxy = "https://corsproxy.io/?";
-          const weatherRes = await fetch(`${corsProxy}https://wttr.in/${city}?format=j1`);
-          if (!weatherRes.ok) throw new Error("Erreur fetch météo ipapi fallback");
+          const corsProxy = "https://muddy-night-834d.g-fleurbayx.workers.dev/?q=";
+          const urlWttrCity = encodeURIComponent(`https://wttr.in/${city}?format=j1`);
+          const weatherResFallback = await fetch(corsProxy + urlWttrCity);
+          if (!weatherResFallback.ok) throw new Error("Erreur fetch météo ipapi fallback");
 
-          const weather = await weatherRes.json();
+          const weather = await weatherResFallback.json();
 
           const forecast = weather.weather.slice(0, 3).map(day => {
             const dateObj = new Date(day.date);
@@ -335,14 +337,6 @@
     }
 
     fetchWeather();
-
-    /*
-    // Test météo simple à coller dans console navigateur :
-    // fetch('https://corsproxy.io/?https://wttr.in/Paris?format=j1')
-    //   .then(res => res.json())
-    //   .then(data => console.log('Test météo Paris OK:', data))
-    //   .catch(err => console.error('Erreur fetch météo:', err));
-    */
   </script>
 </body>
 </html>
