@@ -58,4 +58,90 @@
   <script>
     const cityInput = document.getElementById("city-input");
     const cityNameEl = document.getElementById("city-name");
-    con
+    const forecastEl = document.getElementById("forecast");
+
+    const getIcon = (desc) => {
+      const d = desc.toLowerCase();
+      if (d.includes("sun") || d.includes("soleil")) return "☀️";
+      if (d.includes("cloud")) return "☁️";
+      if (d.includes("rain") || d.includes("pluie")) return "🌧️";
+      if (d.includes("snow") || d.includes("neige")) return "❄️";
+      if (d.includes("storm") || d.includes("orage")) return "⛈️";
+      return "🌦️";
+    };
+
+    const renderForecast = (city, data) => {
+      cityNameEl.textContent = data.nearest_area?.[0]?.areaName?.[0]?.value || city;
+
+      const days = data.weather.slice(0, 7);
+      forecastEl.innerHTML = days.map(day => {
+        const icon = getIcon(day.hourly[4].weatherDesc[0].value);
+        return `
+          <div class="day">
+            <h3>${day.date}</h3>
+            <div class="weather-icon">${icon}</div>
+            <p>🌡️ ${day.mintempC}°C – ${day.maxtempC}°C</p>
+            <p>💧 ${day.hourly[4].chanceofrain}% pluie</p>
+            <p>💨 ${day.hourly[4].windspeedKmph} km/h</p>
+            <p>💦 ${day.hourly[4].humidity}% humidité</p>
+            <p>🔆 UV: ${day.uvIndex}</p>
+          </div>
+        `;
+      }).join("");
+    };
+
+    const fetchWeather = async (city) => {
+      const url = `https://dry-sea-5d28.g-fleurbayx.workers.dev/${encodeURIComponent(city)}?format=j1`;
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 6000);
+
+      try {
+        const res = await fetch(url, { signal: controller.signal });
+        const data = await res.json();
+
+        localStorage.setItem("weatherData", JSON.stringify({
+          city,
+          data,
+          time: Date.now()
+        }));
+
+        renderForecast(city, data);
+
+      } catch (err) {
+        console.warn("Erreur ou délai dépassé, on garde l'ancien cache", err);
+        if (!forecastEl.innerHTML.includes("day")) {
+          forecastEl.textContent = "⚠️ Impossible de charger la météo.";
+        }
+      } finally {
+        clearTimeout(timeout);
+      }
+    };
+
+    const updateCity = () => {
+      const city = cityInput.value.trim();
+      if (!city) return;
+      localStorage.setItem("weatherCity", city);
+      fetchWeather(city);
+    };
+
+    window.onload = () => {
+      const savedCity = localStorage.getItem("weatherCity") || "Paris";
+      cityInput.value = savedCity;
+
+      const cache = localStorage.getItem("weatherData");
+      if (cache) {
+        try {
+          const parsed = JSON.parse(cache);
+          const age = Date.now() - parsed.time;
+          if (parsed.city.toLowerCase() === savedCity.toLowerCase() && age < 1000 * 60 * 60) {
+            renderForecast(savedCity, parsed.data);
+          }
+        } catch (_) {}
+      }
+
+      fetchWeather(savedCity);
+    };
+  </script>
+</body>
+</html>
