@@ -1,330 +1,172 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Makalu Dashboard</title>
-  <style>
-    :root {
-      --bg: #1e1e2f;
-      --text: #f0f0f0;
-      --card-bg: #2c2c3c;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makalu Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --background-color: #f4f4f9;
+            --text-color: #333;
+            --card-background: #fff;
+            --header-background: #007BFF;
+            --header-text: #fff;
+        }
 
-    [data-theme="light"] {
-      --bg: #ffffff;
-      --text: #000000;
-      --card-bg: #f2f2f2;
-    }
+        .dark-mode {
+            --background-color: #222;
+            --text-color: #f4f4f9;
+            --card-background: #333;
+            --header-background: #0d6efd;
+            --header-text: #f8f9fa;
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      flex-wrap: wrap;
-    }
+        header {
+            background-color: var(--header-background);
+            color: var(--header-text);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .left, .center, .right {
-      flex: 1;
-      text-align: center;
-    }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-    .left {
-      text-align: left;
-    }
+        .datetime {
+            font-size: 1rem;
+        }
 
-    .right {
-      text-align: right;
-    }
+        .mode-toggle {
+            cursor: pointer;
+        }
 
-    .time-date {
-      font-size: 1rem;
-    }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 1rem;
+        }
 
-    .theme-toggle {
-      background: none;
-      border: none;
-      color: inherit;
-      font: inherit;
-      cursor: pointer;
-      margin-top: 0.5rem;
-    }
+        .card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 1rem;
+            padding: 1rem;
+            text-align: center;
+            width: 120px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      padding: 1rem;
-    }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 1rem;
-      width: 150px;
-      text-align: center;
-      transition: transform 0.2s ease;
-    }
+        .card i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--header-background);
+        }
 
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .card img {
-      height: 40px;
-      margin-bottom: 0.5rem;
-    }
-
-    .card a {
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    @media (max-width: 600px) {
-      .card {
-        width: 45%;
-      }
-    }
-
-    .weather {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .weather-day {
-      background: var(--card-bg);
-      padding: 1rem;
-      border-radius: 8px;
-      text-align: center;
-      width: 100px;
-    }
-
-    .weather-day img {
-      height: 50px;
-    }
-
-    #cityInput {
-      padding: 0.3rem;
-      font-size: 1rem;
-      width: 200px;
-      max-width: 90vw;
-    }
-
-    #cityBtn {
-      padding: 0.3rem 0.6rem;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-left: 0.5rem;
-    }
-  </style>
+        .card a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+    </style>
 </head>
-<body data-theme="dark">
-  <header>
-    <div class="left">
-      <div class="time-date" id="clock"></div>
+<body>
+    <header>
+        <div class="datetime" id="datetime"></div>
+        <div class="logo">Makalu Dashboard</div>
+        <div>
+            <div class="ping" id="ping"></div>
+            <div class="mode-toggle" id="modeToggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="card">
+            <i class="fas fa-film"></i>
+            <div><a href="http://plex.bayx.org">Plex</a></div>
+        </div>
+        <div class="card">
+            <i class="fas fa-search"></i>
+            <div><a href="http://radarr.bayx.org">Radarr</a></div>
+        </div>
+        <div class="card">
+            <i class="fas fa-tv"></i>
+            <div><a href="http://sonarr.bayx.org">Sonarr</a></div>
+        </div>
+        <div class="card">
+            <i class="fas fa-compact-disc"></i>
+            <div><a href="http://lidarr.bayx.org">Lidarr</a></div>
+        </div>
+        <div class="card">
+            <i class="fas fa-search-plus"></i>
+            <div><a href="http://prowlarr.bayx.org">Prowlarr</a></div>
+        </div>
+        <div class="card">
+            <i class="fas fa-chart-line"></i>
+            <div><a href="http://tautulli.bayx.org">Tautulli</a></div>
+        </div>
+        <div class="card">
+            <i class="fas fa-download"></i>
+            <div><a href="http://qbitorrent.bayx.org">qBittorrent</a></div>
+        </div>
+        <div class="card">
+            <i class="fas fa-home"></i>
+            <div><a href="http://homeassistant.bayx.org">Home Assistant</a></div>
+        </div>
     </div>
-    <div class="center">
-      <h1>Makalu Dashboard</h1>
-    </div>
-    <div class="right">
-      <div id="ping">Ping: ...</div>
-      <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
-    </div>
-  </header>
-  <div style="text-align: center; margin: 1rem;">
-    <input type="text" id="cityInput" placeholder="Saisir ville (ex: Paris)">
-    <button id="cityBtn" onclick="fetchWeatherByCity()">Mettre à jour</button>
-  </div>
-  <section class="weather" id="weather"></section>
-  <main class="cards">
-    <div class="card">
-      <a href="http://plex.local:32400" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/plex.svg" alt="Plex">
-        <div>Plex</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://radarr.local:7878" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/radarr.svg" alt="Radarr">
-        <div>Radarr</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://sonarr.local:8989" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/sonarr.svg" alt="Sonarr">
-        <div>Sonarr</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://prowlarr.local:9696" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/prowlarr.svg" alt="Prowlarr">
-        <div>Prowlarr</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://lidarr.local:8686" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/lidarr.svg" alt="Lidarr">
-        <div>Lidarr</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://tautulli.local:8181" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/tautulli.svg" alt="Tautulli">
-        <div>Tautulli</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://qbittorrent.local:8080" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/qbittorrent.svg" alt="qBittorrent">
-        <div>qBittorrent</div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="http://homeassistant.local:8123" target="_blank">
-        <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@main/svg/home-assistant.svg" alt="Home Assistant">
-        <div>Home Assistant</div>
-      </a>
-    </div>
-  </main>
-  <script>
-    function updateClock() {
-      const now = new Date();
-      const options = { hour: 'numeric', minute: '2-digit', hour12: false };
-      const time = now.toLocaleTimeString('fr-FR', options);
-      const date = now.toLocaleDateString('fr-FR');
-      document.getElementById('clock').textContent = `${time} - ${date}`;
-    }
 
-    function toggleTheme() {
-      const body = document.body;
-      const current = body.getAttribute('data-theme');
-      body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-    }
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('datetime').textContent = now.toLocaleDateString('fr-FR', options);
+        }
 
-    async function pingDevice() {
-      try {
-        const startTime = new Date().getTime();
-        await fetch("http://192.168.10.90", { mode: 'no-cors' });
-        const endTime = new Date().getTime();
-        const pingTime = endTime - startTime;
-        document.getElementById("ping").textContent = `Ping: ✅ (${pingTime}ms)`;
-      } catch {
-        document.getElementById("ping").textContent = "Ping: ❌";
-      }
-    }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
 
-    const translations = {
-      "Sunny": "Ensoleillé",
-      "Clear": "Dégagé",
-      "Partly cloudy": "Partiellement nuageux",
-      "Cloudy": "Nuageux",
-      "Overcast": "Couvert",
-      "Mist": "Brume",
-      "Patchy rain possible": "Pluie possible",
-      "Light rain": "Pluie légère",
-      "Heavy rain": "Forte pluie",
-      "Showers": "Averses",
-      "Thunderstorm": "Orage",
-      "Fog": "Brouillard",
-      "Patchy snow possible": "Neige possible"
-    };
-
-    function translateCondition(cond) {
-      return translations[cond] || cond;
-    }
-
-    function clearWeather() {
-      document.getElementById("weather").innerHTML = "";
-    }
-
-    async function getWeather(lat, lon) {
-      try {
-        const res = await fetch(`https://dry-sea-5d28.g-fleurbayx.workers.dev/${lat},${lon}?format=j1`);
-        const data = await res.json();
-        displayWeather(data);
-      } catch (error) {
-        console.error("Error fetching weather:", error);
-        alert("Erreur lors de la récupération de la météo.");
-      }
-    }
-
-    async function getWeatherByCity(city) {
-      try {
-        const res = await fetch(`https://dry-sea-5d28.g-fleurbayx.workers.dev/${encodeURIComponent(city)}?format=j1`);
-        const data = await res.json();
-        displayWeather(data);
-      } catch (error) {
-        console.error("Error fetching weather by city:", error);
-        alert("Erreur lors de la récupération de la météo pour la ville.");
-      }
-    }
-
-    function displayWeather(data) {
-      clearWeather();
-      const weather = document.getElementById("weather");
-      for (let i = 0; i < 3; i++) {
-        const day = data.weather[i];
-        const dateObj = new Date(day.date);
-        const options = { weekday: 'short' };
-        const dayName = dateObj.toLocaleDateString('fr-FR', options);
-        const icon = day.hourly[4].weatherIconUrl[0].value;
-        const rain = day.hourly[4].chanceofrain;
-        const condition = translateCondition(day.hourly[4].weatherDesc[0].value);
-        const tempMin = day.mintempC;
-        const tempMax = day.maxtempC;
-        const el = document.createElement("div");
-        el.className = "weather-day";
-        el.innerHTML = `
-          <strong>${dayName}</strong><br>
-          <img src="${icon}" alt="${condition}"><br>
-          ${tempMin}°C / ${tempMax}°C<br>
-          ${rain}% pluie<br>
-          <em>${condition}</em>
-        `;
-        weather.appendChild(el);
-      }
-    }
-
-    function getLocationAndWeather() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          getWeather(pos.coords.latitude, pos.coords.longitude);
-        }, () => {
-          getWeatherByCity("Paris");
+        document.getElementById('modeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
         });
-      } else {
-        getWeatherByCity("Paris");
-      }
-    }
 
-    function fetchWeatherByCity() {
-      const city = document.getElementById("cityInput").value.trim();
-      if (city) {
-        getWeatherByCity(city);
-      } else {
-        alert("Merci de saisir une ville.");
-      }
-    }
+        async function updatePing() {
+            try {
+                const startTime = new Date().getTime();
+                const response = await fetch('http://raspberrypi-alpine.local', { method: 'HEAD', mode: 'no-cors', cache: 'no-store' });
+                const endTime = new Date().getTime();
+                const pingTime = endTime - startTime;
+                document.getElementById('ping').textContent = `Ping: ${pingTime}ms`;
+            } catch (error) {
+                document.getElementById('ping').textContent = 'Ping: Offline';
+            }
+        }
 
-    setInterval(updateClock, 1000);
-    updateClock();
-    pingDevice();
-    getLocationAndWeather();
-  </script>
+        setInterval(updatePing, 5000);
+        updatePing();
+    </script>
 </body>
 </html>
+jjn
